@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+    <script src="https://cdn.staticfile.org/hls.js/1.1.4-0.canary.8229/hls.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <video style="top: 0px;right: 0px;bottom: 0px;left: 0px;margin: auto;max-height: 220px;width: 100%;background-color:black;" id="video" controls autoplay></video>
+    <button id="play">播放视频</button>
+    <button id="close">关闭连接</button>
+</body>
+<script>
+    function getKey(_0x7c96b5) {
+        var _0x214365 = {
+            'haZdN': '2|3|5|1|4|0',
+            'JnFvK': function (_0x194fc6, _0x1edbae) {
+                return _0x194fc6 || _0x1edbae;
+            },
+            'oVUOC': 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678',
+            'GZFDR': function (_0x383254, _0x483e8b) {
+                return _0x383254 < _0x483e8b;
+            },
+            'JxtVB': function (_0x6fa0ea, _0x325b97) {
+                return _0x6fa0ea * _0x325b97;
+            }
+        };
+        var _0x4290eb = _0x214365['haZdN']['split']('|'), _0x4858f9 = 0;
+        while (!![]) {
+            switch (_0x4290eb[_0x4858f9++]) {
+                case '0':
+                    return _0x52150a;
+                case '1':
+                    var _0x52150a = '';
+                    continue;
+                case '2':
+                    _0x7c96b5 = _0x214365['JnFvK'](_0x7c96b5, 32);
+                    continue;
+                case '3':
+                    var _0x696669 = _0x214365['oVUOC'];
+                    continue;
+                case '4':
+                    for (i = 0; _0x214365['GZFDR'](i, _0x7c96b5); i++) {
+                        _0x52150a += _0x696669['charAt'](Math['floor'](_0x214365['JxtVB'](Math['random'](), _0x64655d)));
+                    }
+                    continue;
+                case '5':
+                    var _0x64655d = _0x696669['length'];
+                    continue;
+            }
+            break;
+        }
+    }
+    playBtn = document.getElementById("play")
+    closeBtn = document.getElementById("close")
+    video = document.getElementById('video');
+    
+    function playVideo(url) {
+        if (Hls.isSupported()) {
+            var hls = new Hls();
+            hls.loadSource(url);
+            hls.attachMedia(video);
+        }
+    }
+
+    playBtn.onclick = function () {
+        socket = io("http://210.87.207.212:8003")
+        socket.emit('success', {
+            's': getKey(8)
+        });
+        socket.on('getMove', function (response) {
+        console.log(response)
+        playVideo(response)
+    });
+    }
+    closeBtn.onclick = function () {
+        socket.close()
+    }
+</script>
+
+</html>
